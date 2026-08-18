@@ -77,6 +77,7 @@ export default function ProjectsGrid() {
                       location={project.location}
                       category={project.category}
                       year={project.year}
+                      area={project.area}
                       image={project.image}
                       aspectRatio={ratio}
                       onClick={() => setSelectedProject(project)}

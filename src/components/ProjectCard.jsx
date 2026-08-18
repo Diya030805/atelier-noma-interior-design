@@ -7,6 +7,7 @@ export default function ProjectCard({
   location,
   category,
   year,
+  area,
   image,
   onClick,
   onImageClick,
@@ -95,15 +96,18 @@ export default function ProjectCard({
           <h3 className="font-serif text-lg md:text-xl text-deep-espresso group-hover:text-terracotta-beige transition-colors duration-300 font-light">
             {title}
           </h3>
-          <span className="font-sans text-[10px] font-bold tracking-widest text-terracotta-beige uppercase">
-            {year}
+          <span className="font-sans text-[10px] font-bold tracking-widest text-[#8c7a6b] uppercase">
+            {category}
           </span>
         </div>
         
-        <div className="flex items-center gap-2 mt-1">
-          <span className="text-xs text-deep-espresso/60">{location}</span>
-          <span className="w-1 h-1 rounded-full bg-deep-espresso/25"></span>
-          <span className="text-xs text-deep-espresso/50 italic">{category}</span>
+        {/* Subtle, elegant physical detail strip */}
+        <div className="w-full mt-2.5 pt-2.5 border-t border-deep-espresso/5 flex justify-between items-center font-sans text-[10px] uppercase tracking-wider text-deep-espresso/50">
+          <span className="font-semibold text-deep-espresso/60">{area || "4,200 SQ FT"}</span>
+          <span className="w-1 h-1 rounded-full bg-deep-espresso/15"></span>
+          <span>{location}</span>
+          <span className="w-1 h-1 rounded-full bg-deep-espresso/15"></span>
+          <span className="font-medium text-terracotta-beige">{year}</span>
         </div>
       </div>
     </div>
