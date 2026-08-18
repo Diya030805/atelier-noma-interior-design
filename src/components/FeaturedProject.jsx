@@ -30,7 +30,7 @@ export default function FeaturedProject() {
         </div>
 
         {/* Cinematic Oversized Image Container (extending beyond container margins with subtle parallax zoom) */}
-        <div className="relative group overflow-hidden rounded-none aspect-[16/9] md:aspect-[21/9] shadow-lg border border-warm-sand mb-12 cursor-pointer" onClick={() => setIsOpen(true)}>
+        <div data-cursor="EXPLORE" className="relative group overflow-hidden rounded-none aspect-[16/9] md:aspect-[21/9] shadow-lg border border-warm-sand mb-12 cursor-pointer" onClick={() => setIsOpen(true)}>
           <img
             src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1800&q=80"
             alt="Widescreen high-end kitchen and dining area at House of Quiet Light, Alibaug, India"

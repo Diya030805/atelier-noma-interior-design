@@ -1,5 +1,7 @@
 import React from 'react';
 import Navbar from './components/Navbar.jsx';
+import CustomCursor from './components/CustomCursor.jsx';
+import ReadingProgressBar from './components/ReadingProgressBar.jsx';
 import Hero from './components/Hero.jsx';
 import StudioIntro from './components/StudioIntro.jsx';
 import Philosophy from './components/Philosophy.jsx';
@@ -34,6 +36,12 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-warm-ivory text-deep-espresso flex flex-col justify-between selection:bg-terracotta-beige selection:text-warm-ivory">
+      {/* Editorial Custom Cursor */}
+      <CustomCursor />
+
+      {/* Reading Progress Bar */}
+      <ReadingProgressBar />
+
       {/* Sticky Header Navigation bar */}
       <Navbar onNavigate={handleSectionNavigation} />
 

@@ -121,3 +121,11 @@ body {
   outline: 2px solid #A98264;
   outline-offset: 4px;
 }
+
+/* Custom cursor default pointer hiding */
+@media (pointer: fine) {
+  [data-cursor] {
+    cursor: none !important;
+  }
+}
+

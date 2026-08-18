@@ -15,6 +15,7 @@ export default function ProjectCard({
   return (
     <div
       onClick={onClick}
+      data-cursor="EXPLORE"
       className={`group cursor-pointer flex flex-col justify-start items-stretch ${offsetClass} transition-all duration-500`}
     >
       {/* Editorial Image frame */}
