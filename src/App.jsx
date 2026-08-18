@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from './components/Navbar.jsx';
 import Hero from './components/Hero.jsx';
 import StudioIntro from './components/StudioIntro.jsx';
+import Philosophy from './components/Philosophy.jsx';
 import Services from './components/Services.jsx';
 import FeaturedProject from './components/FeaturedProject.jsx';
 import ProjectsGrid from './components/ProjectsGrid.jsx';
@@ -42,6 +43,9 @@ export default function App() {
 
         {/* Studio Architectural Introduction */}
         <StudioIntro onNavigate={handleSectionNavigation} />
+
+        {/* Our Philosophy section */}
+        <Philosophy />
 
         {/* Studio core services showcase */}
         <Services />
