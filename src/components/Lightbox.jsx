@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Share2, Check } from 'lucide-react';
 
 export default function Lightbox({
   images,
@@ -9,6 +9,7 @@ export default function Lightbox({
   onPrev
 }) {
   const [isZoomed, setIsZoomed] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   // Keyboard navigation control
   useEffect(() => {
@@ -45,6 +46,21 @@ export default function Lightbox({
     setIsZoomed(prev => !prev);
   };
 
+  const handleCopyLink = () => {
+    const shareUrl = `${window.location.origin}${window.location.pathname}?project=${encodeURIComponent(title)}`;
+    navigator.clipboard.writeText(shareUrl)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2500);
+      })
+      .catch((err) => {
+        console.error('Failed to copy text: ', err);
+      });
+  };
+
+  // Pinterest Pin sharing endpoint
+  const pinterestShareUrl = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(window.location.href)}&media=${encodeURIComponent(imageUrl)}&description=${encodeURIComponent(`Luxury architectural design highlight from Atelier Noma - ${title}`)}`;
+
   return (
     <div
       id="lightbox-viewport"
@@ -57,7 +73,7 @@ export default function Lightbox({
       }}
     >
       {/* Lightbox Top bar: Metadata & Actions */}
-      <div className="flex justify-between items-center w-full z-10 py-2 border-b border-warm-ivory/10">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center w-full z-10 py-3 gap-3 md:gap-0 border-b border-warm-ivory/10">
         <div className="text-left font-sans text-warm-ivory">
           <span className="font-serif text-lg md:text-xl font-light italic text-warm-ivory/90 leading-none">
             {title}
@@ -67,27 +83,68 @@ export default function Lightbox({
           </p>
         </div>
 
-        {/* Top actions */}
-        <div className="flex items-center gap-3">
-          {/* Zoom Toggle */}
-          <button
-            onClick={toggleZoom}
-            data-cursor={isZoomed ? 'ZOOM_OUT' : 'ZOOM_IN'}
-            className="w-10 h-10 bg-warm-ivory/5 hover:bg-warm-ivory/10 border border-warm-ivory/10 text-warm-ivory flex items-center justify-center transition-colors focus:outline-none focus:ring-1 focus:ring-warm-ivory/30"
-            title={isZoomed ? 'Zoom Out' : 'Zoom In'}
-          >
-            {isZoomed ? <ZoomOut className="w-4 h-4" /> : <ZoomIn className="w-4 h-4" />}
-          </button>
+        {/* Share and Action items group */}
+        <div className="flex flex-wrap items-center gap-4 md:gap-6 w-full md:w-auto justify-between md:justify-end">
+          
+          {/* Subtle Editorial Share Links */}
+          <div className="flex items-center gap-3 font-sans text-[10px] tracking-widest font-bold uppercase text-warm-ivory/40">
+            <span className="hidden sm:inline">SHARE:</span>
+            
+            {/* Pinterest Link */}
+            <a
+              href={pinterestShareUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cursor="PINTEREST"
+              className="text-warm-ivory/70 hover:text-terracotta-beige transition-colors duration-300 border-b border-transparent hover:border-terracotta-beige pb-0.5"
+              title="Pin on Pinterest"
+            >
+              PINTEREST
+            </a>
+            
+            <span className="text-warm-ivory/20">•</span>
 
-          {/* Close */}
-          <button
-            onClick={onClose}
-            data-cursor="CLOSE"
-            className="w-10 h-10 bg-warm-ivory/5 hover:bg-warm-ivory/10 border border-warm-ivory/10 text-warm-ivory flex items-center justify-center transition-colors focus:outline-none focus:ring-1 focus:ring-warm-ivory/30"
-            title="Close Lightbox"
-          >
-            <X className="w-4 h-4" />
-          </button>
+            {/* Instagram / Copy Link Anchor */}
+            <button
+              onClick={handleCopyLink}
+              data-cursor="COPY_LINK"
+              className="text-warm-ivory/70 hover:text-terracotta-beige transition-colors duration-300 border-b border-transparent hover:border-terracotta-beige pb-0.5 flex items-center gap-1.5 focus:outline-none"
+              title="Copy link to clipboard"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-3 h-3 text-terracotta-beige" />
+                  <span className="text-terracotta-beige">LINK COPIED</span>
+                </>
+              ) : (
+                <>
+                  <span>INSTAGRAM / COPY</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          <div className="flex items-center gap-2.5 ml-auto md:ml-0">
+            {/* Zoom Toggle */}
+            <button
+              onClick={toggleZoom}
+              data-cursor={isZoomed ? 'ZOOM_OUT' : 'ZOOM_IN'}
+              className="w-10 h-10 bg-warm-ivory/5 hover:bg-warm-ivory/10 border border-warm-ivory/10 text-warm-ivory flex items-center justify-center transition-colors focus:outline-none"
+              title={isZoomed ? 'Zoom Out' : 'Zoom In'}
+            >
+              {isZoomed ? <ZoomOut className="w-4 h-4" /> : <ZoomIn className="w-4 h-4" />}
+            </button>
+
+            {/* Close */}
+            <button
+              onClick={onClose}
+              data-cursor="CLOSE"
+              className="w-10 h-10 bg-warm-ivory/5 hover:bg-warm-ivory/10 border border-warm-ivory/10 text-warm-ivory flex items-center justify-center transition-colors focus:outline-none"
+              title="Close Lightbox"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
 

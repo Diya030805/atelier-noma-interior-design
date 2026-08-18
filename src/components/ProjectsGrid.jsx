@@ -4,6 +4,7 @@ import ProjectCard from './ProjectCard.jsx';
 import SectionHeading from './SectionHeading.jsx';
 import Button from './Button.jsx';
 import Lightbox from './Lightbox.jsx';
+import Reveal from './Reveal.jsx';
 import { X, MapPin, Calendar, Ruler, Award, Sparkles, Maximize2 } from 'lucide-react';
 
 export default function ProjectsGrid() {
@@ -69,22 +70,24 @@ export default function ProjectsGrid() {
               const ratio = aspectRatios[idx % aspectRatios.length];
               return (
                 <div key={project.id} className="break-inside-avoid mb-8">
-                  <ProjectCard
-                    id={project.id}
-                    title={project.title}
-                    location={project.location}
-                    category={project.category}
-                    year={project.year}
-                    image={project.image}
-                    aspectRatio={ratio}
-                    onClick={() => setSelectedProject(project)}
-                    onImageClick={() => {
-                      const projIndex = filteredProjects.findIndex(p => p.id === project.id);
-                      if (projIndex !== -1) {
-                        setLightboxIndex(projIndex);
-                      }
-                    }}
-                  />
+                  <Reveal delay={(idx % 3) * 120} className="h-full w-full">
+                    <ProjectCard
+                      id={project.id}
+                      title={project.title}
+                      location={project.location}
+                      category={project.category}
+                      year={project.year}
+                      image={project.image}
+                      aspectRatio={ratio}
+                      onClick={() => setSelectedProject(project)}
+                      onImageClick={() => {
+                        const projIndex = filteredProjects.findIndex(p => p.id === project.id);
+                        if (projIndex !== -1) {
+                          setLightboxIndex(projIndex);
+                        }
+                      }}
+                    />
+                  </Reveal>
                 </div>
               );
             })}

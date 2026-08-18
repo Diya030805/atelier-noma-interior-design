@@ -17,6 +17,7 @@ import Journal from './components/Journal.jsx';
 import Contact from './components/Contact.jsx';
 import FAQ from './components/FAQ.jsx';
 import Newsletter from './components/Newsletter.jsx';
+import BackToTop from './components/BackToTop.jsx';
 import Footer from './components/Footer.jsx';
 
 export default function App() {
@@ -47,6 +48,9 @@ export default function App() {
 
       {/* Floating Enquire Button */}
       <FloatingEnquireButton onEnquireClick={handleSectionNavigation} />
+
+      {/* Subtle Back to Top CTA */}
+      <BackToTop />
 
       {/* Sticky Header Navigation bar */}
       <Navbar onNavigate={handleSectionNavigation} />

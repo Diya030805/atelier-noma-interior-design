@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ArrowUpRight, Maximize2 } from 'lucide-react';
 
 export default function ProjectCard({
@@ -13,20 +13,43 @@ export default function ProjectCard({
   aspectRatio = "aspect-[4/5]",
   offsetClass = ""
 }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Construct a highly optimized, ultra-lightweight placeholder URL from Unsplash parameters
+  const placeholderUrl = image ? `${image}&q=10&w=30` : '';
+
   return (
     <div
       onClick={onClick}
       data-cursor="EXPLORE"
       className={`group cursor-pointer flex flex-col justify-start items-stretch ${offsetClass} transition-all duration-500`}
     >
-      {/* Editorial Image frame */}
+      {/* Editorial Image frame with blur-up loading staging */}
       <div className={`relative overflow-hidden rounded-none ${aspectRatio} border border-soft-cream bg-soft-cream shadow-sm`}>
+        
+        {/* Instant blurred low-quality placeholder */}
+        {!isLoaded && placeholderUrl && (
+          <img
+            src={placeholderUrl}
+            alt=""
+            role="presentation"
+            className="absolute inset-0 w-full h-full object-cover blur-[16px] scale-[1.08] transition-opacity duration-500"
+          />
+        )}
+
+        {/* Main High-Resolution Image */}
         <img
           src={image}
           alt={`Luxury interior architectural design of ${title} in ${location}`}
           loading="lazy"
-          className="w-full h-full object-cover transform scale-100 group-hover:scale-[1.05] transition-transform duration-700 ease-out"
+          onLoad={() => setIsLoaded(true)}
+          className={`w-full h-full object-cover transform transition-all duration-[1000ms] ease-[cubic-bezier(0.25,1,0.5,1)] ${
+            isLoaded 
+              ? 'opacity-100 blur-0 scale-100 group-hover:scale-[1.05]' 
+              : 'opacity-0 blur-[12px] scale-[1.05]'
+          }`}
         />
+
         {/* Soft elegant gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-deep-espresso/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-between p-6">
           <span className="text-warm-ivory text-[10px] font-bold tracking-widest uppercase">
