@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { journal } from '../data/journal.js';
 import SectionHeading from './SectionHeading.jsx';
 import Button from './Button.jsx';
@@ -6,6 +7,33 @@ import { X, Clock, Eye, Sparkles } from 'lucide-react';
 
 export default function Journal() {
   const [activeArticle, setActiveArticle] = useState(null);
+  const [markdownContent, setMarkdownContent] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!activeArticle) {
+      setMarkdownContent('');
+      return;
+    }
+
+    setIsLoading(true);
+    fetch(`/journal/${activeArticle.id}.md`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Failed to retrieve journal markdown content.');
+        }
+        return res.text();
+      })
+      .then((data) => {
+        setMarkdownContent(data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setMarkdownContent(`# ${activeArticle.title}\n\nUnable to load the complete article content at this moment. Please try again later.`);
+        setIsLoading(false);
+      });
+  }, [activeArticle]);
 
   return (
     <section
@@ -105,28 +133,35 @@ export default function Journal() {
                 <span>Published on {activeArticle.date}</span>
               </div>
 
-              {/* Rich text simulator */}
-              <div className="space-y-6 font-sans text-sm md:text-base text-deep-espresso/80 leading-relaxed">
-                <p className="font-serif text-lg italic text-deep-espresso/90 border-l-2 border-terracotta-beige pl-4">
-                  {activeArticle.excerpt}
-                </p>
-
-                <p>
-                  At Atelier Noma, we treat spaces not as sterile white boxes, but as living extensions of the environments in which they exist. Whether sourcing regional stone in Rajasthan, selecting local timbers in Maharashtra, or staging unlacquered metal joints, our design decisions always begin with physical research into the core building blocks of visual continuity.
-                </p>
-
-                <h4 className="font-serif text-xl text-deep-espresso font-medium pt-4">
-                  The Weight of Authentic Materials
-                </h4>
-
-                <p>
-                  Natural textures carry an implicit history and density that human eyes and hands understand instantly. Clear, unvarnished wood grains and natural minerals do not seek to cover up their inherent lines or cavities. Instead, they catch natural daylight in unique, unrepeatable visual rhythms.
-                </p>
-
-                <p>
-                  By prioritizing these slow-finished objects over quick-drying synthetic substitutes, we build residential spaces that age with incredible grace. This tactile focus ensures that our rooms feel comfortable, grounding, and fully complete right from the first day.
-                </p>
-              </div>
+              {/* Dynamic Markdown Content */}
+              {isLoading ? (
+                <div className="py-16 text-center">
+                  <div className="inline-block w-8 h-8 border-2 border-terracotta-beige border-t-transparent rounded-full animate-spin"></div>
+                  <p className="font-serif italic text-sm text-deep-espresso/60 mt-4">Retrieving original drafts...</p>
+                </div>
+              ) : (
+                <div className="font-sans text-sm md:text-base text-deep-espresso/80 leading-relaxed max-w-none">
+                  {/* Styled Markdown container wrapper */}
+                  <div className="space-y-6 prose prose-espresso prose-sm md:prose-base">
+                    <ReactMarkdown
+                      components={{
+                        h1: ({ node, ...props }) => <h1 className="hidden" {...props} />, // Main title is already in the cover
+                        h2: ({ node, ...props }) => <h2 className="font-serif text-xl md:text-2xl text-deep-espresso font-medium pt-4 mb-2 tracking-tight" {...props} />,
+                        h3: ({ node, ...props }) => <h3 className="font-serif text-lg md:text-xl text-deep-espresso font-light italic pt-3 mb-2" {...props} />,
+                        p: ({ node, ...props }) => <p className="mb-4 text-deep-espresso/80 leading-relaxed" {...props} />,
+                        ul: ({ node, ...props }) => <ul className="list-disc list-inside pl-4 mb-4 space-y-1 text-deep-espresso/80" {...props} />,
+                        ol: ({ node, ...props }) => <ol className="list-decimal list-inside pl-4 mb-4 space-y-1 text-deep-espresso/80" {...props} />,
+                        li: ({ node, ...props }) => <li className="text-sm md:text-base" {...props} />,
+                        blockquote: ({ node, ...props }) => (
+                          <blockquote className="font-serif text-base md:text-lg italic text-deep-espresso/90 border-l-2 border-terracotta-beige pl-4 my-6 bg-soft-cream/30 py-2 pr-2" {...props} />
+                        )
+                      }}
+                    >
+                      {markdownContent}
+                    </ReactMarkdown>
+                  </div>
+                </div>
+              )}
 
               <div className="mt-12 pt-6 border-t border-deep-espresso/10 flex justify-between items-center">
                 <span className="text-[10px] font-bold tracking-widest text-deep-espresso/40 uppercase flex items-center gap-1.5">
