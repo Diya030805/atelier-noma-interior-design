@@ -5,8 +5,10 @@ import Button from './Button.jsx';
 export default function Navbar({ onNavigate }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     const handleScroll = () => {
       if (window.scrollY > 50) {
         setIsScrolled(true);
@@ -56,7 +58,9 @@ export default function Navbar({ onNavigate }) {
     <>
       <nav
         id="navbar"
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 bg-warm-ivory/95 backdrop-blur-md border-b border-deep-espresso/10 ${
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-[1000ms] cubic-bezier(0.16, 1, 0.3, 1) bg-warm-ivory/95 backdrop-blur-md border-b border-deep-espresso/10 ${
+          isMounted ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+        } ${
           isScrolled
             ? 'py-4 shadow-sm'
             : 'py-5'
