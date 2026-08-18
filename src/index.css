@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Manrope", system-ui, -apple-system, sans-serif;
+
+  --color-warm-ivory: #F7F3EC;
+  --color-soft-cream: #EEE7DB;
+  --color-warm-sand: #D8C5AE;
+  --color-muted-taupe: #B59A80;
+  --color-terracotta-beige: #A98264;
+  --color-deep-espresso: #40352D;
+  --color-soft-charcoal: #292521;
+  
+  --animate-fade-in: fade-in 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-slide-up: slide-up 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-scale-up: scale-up 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-up {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Global Page Styles */
+html {
+  scroll-behavior: smooth;
+  background-color: #F7F3EC;
+  color: #40352D;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  overflow-x: hidden;
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background-color: #A98264;
+  color: #F7F3EC;
+}
+
+/* Modern minimalist custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F7F3EC;
+}
+::-webkit-scrollbar-thumb {
+  background: #D8C5AE;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B59A80;
+}
+
+/* Hide scrollbars for horizontal swipe elements on mobile but allow swiping */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Base custom classes for fine editorial design */
+.text-display-clamp {
+  font-size: clamp(2.2rem, 5.5vw, 4.8rem);
+  line-height: 1.1;
+  font-family: var(--font-serif);
+}
+
+.text-hero-clamp {
+  font-size: clamp(2.8rem, 6.5vw, 6rem);
+  line-height: 1.05;
+  font-family: var(--font-serif);
+}
+
+/* Architectural lines */
+.divider-h {
+  height: 1px;
+  background-color: rgba(64, 53, 45, 0.08);
+  width: 100%;
+}
+
+.divider-v {
+  width: 1px;
+  background-color: rgba(64, 53, 45, 0.08);
+  height: 100%;
+}
+
+/* Focus styles for accessibility */
+.focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  outline: 2px solid #A98264;
+  outline-offset: 4px;
+}

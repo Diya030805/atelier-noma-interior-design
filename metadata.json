@@ -1,0 +1,8 @@
+{
+  "name": "Atelier Noma",
+  "description": "Atelier Noma is a luxury interior architecture & design studio website styled with an editorial, sophisticated neutral design.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
