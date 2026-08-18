@@ -3,11 +3,13 @@ import { projects } from '../data/projects.js';
 import ProjectCard from './ProjectCard.jsx';
 import SectionHeading from './SectionHeading.jsx';
 import Button from './Button.jsx';
-import { X, MapPin, Calendar, Ruler, Award, Sparkles } from 'lucide-react';
+import Lightbox from './Lightbox.jsx';
+import { X, MapPin, Calendar, Ruler, Award, Sparkles, Maximize2 } from 'lucide-react';
 
 export default function ProjectsGrid() {
   const [filter, setFilter] = useState('All');
   const [selectedProject, setSelectedProject] = useState(null);
+  const [lightboxIndex, setLightboxIndex] = useState(null);
 
   const categories = ['All', 'Residential Interior', 'Apartment', 'Retreat Home', 'Creative Workspace'];
 
@@ -15,39 +17,20 @@ export default function ProjectsGrid() {
     ? projects
     : projects.filter(p => p.category === filter);
 
-  // Configuration map for asymmetric editorial layout on desktop
-  const gridLayoutConfig = [
-    {
-      aspectRatio: "aspect-[4/5] md:aspect-[3/4]",
-      offsetClass: "lg:col-span-7 lg:pr-12"
-    },
-    {
-      aspectRatio: "aspect-[4/5] md:aspect-[1/1]",
-      offsetClass: "lg:col-span-5 lg:mt-24"
-    },
-    {
-      aspectRatio: "aspect-[1/1] md:aspect-[4/5]",
-      offsetClass: "lg:col-span-5 lg:-mt-12"
-    },
-    {
-      aspectRatio: "aspect-[4/5] md:aspect-[3/4]",
-      offsetClass: "lg:col-span-7 lg:pl-16 lg:mt-8"
-    },
-    {
-      aspectRatio: "aspect-[4/3] md:aspect-[4/5]",
-      offsetClass: "lg:col-span-6 lg:pr-6"
-    },
-    {
-      aspectRatio: "aspect-[4/5] md:aspect-[1/1]",
-      offsetClass: "lg:col-span-6 lg:pl-6 lg:mt-16"
+  const handleNextLightboxImage = () => {
+    if (lightboxIndex !== null) {
+      setLightboxIndex((prevIndex) => (prevIndex + 1) % filteredProjects.length);
     }
-  ];
+  };
+
+  const handlePrevLightboxImage = () => {
+    if (lightboxIndex !== null) {
+      setLightboxIndex((prevIndex) => (prevIndex - 1 + filteredProjects.length) % filteredProjects.length);
+    }
+  };
 
   return (
-    <section
-      id="projects"
-      className="bg-warm-ivory py-20 md:py-32 relative overflow-hidden"
-    >
+    <section id="projects" className="py-24 bg-warm-ivory relative">
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
         <SectionHeading
           label="SELECTED PROJECTS"
@@ -95,6 +78,12 @@ export default function ProjectsGrid() {
                     image={project.image}
                     aspectRatio={ratio}
                     onClick={() => setSelectedProject(project)}
+                    onImageClick={() => {
+                      const projIndex = filteredProjects.findIndex(p => p.id === project.id);
+                      if (projIndex !== -1) {
+                        setLightboxIndex(projIndex);
+                      }
+                    }}
                   />
                 </div>
               );
@@ -116,14 +105,30 @@ export default function ProjectsGrid() {
               <X className="w-5 h-5" />
             </button>
 
-            {/* Modal Hero */}
-            <div className="relative h-64 md:h-96">
+            {/* Modal Hero with full-screen Lightbox trigger option */}
+            <div 
+              onClick={() => {
+                const globalIndex = filteredProjects.findIndex(p => p.id === selectedProject.id);
+                if (globalIndex !== -1) {
+                  setLightboxIndex(globalIndex);
+                }
+              }}
+              data-cursor="ZOOM"
+              title="Click to inspect in full-screen lightbox"
+              className="relative h-64 md:h-96 cursor-zoom-in group overflow-hidden"
+            >
               <img
                 src={selectedProject.image}
                 alt={selectedProject.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-warm-ivory via-warm-ivory/10 to-transparent"></div>
+              
+              <div className="absolute top-6 left-6 bg-deep-espresso/70 text-warm-ivory px-3 py-1.5 flex items-center gap-2 font-sans text-[9px] tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <Maximize2 className="w-3 h-3" />
+                <span>INSPECT CLOSE-UP</span>
+              </div>
+
               <div className="absolute bottom-6 left-8 md:left-12">
                 <span className="bg-terracotta-beige text-warm-ivory text-[9px] font-bold tracking-widest uppercase px-3 py-1 rounded-none">
                   {selectedProject.category}
@@ -194,6 +199,17 @@ export default function ProjectsGrid() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* BRAND NEW ELEGANT LIGHTBOX FULL-SCREEN VIEWPORT */}
+      {lightboxIndex !== null && (
+        <Lightbox
+          images={filteredProjects}
+          currentIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+          onNext={handleNextLightboxImage}
+          onPrev={handlePrevLightboxImage}
+        />
       )}
     </section>
   );

@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from './components/Navbar.jsx';
 import CustomCursor from './components/CustomCursor.jsx';
 import ReadingProgressBar from './components/ReadingProgressBar.jsx';
+import FloatingEnquireButton from './components/FloatingEnquireButton.jsx';
 import Hero from './components/Hero.jsx';
 import StudioIntro from './components/StudioIntro.jsx';
 import Philosophy from './components/Philosophy.jsx';
@@ -14,6 +15,8 @@ import Team from './components/Team.jsx';
 import Testimonials from './components/Testimonials.jsx';
 import Journal from './components/Journal.jsx';
 import Contact from './components/Contact.jsx';
+import FAQ from './components/FAQ.jsx';
+import Newsletter from './components/Newsletter.jsx';
 import Footer from './components/Footer.jsx';
 
 export default function App() {
@@ -41,6 +44,9 @@ export default function App() {
 
       {/* Reading Progress Bar */}
       <ReadingProgressBar />
+
+      {/* Floating Enquire Button */}
+      <FloatingEnquireButton onEnquireClick={handleSectionNavigation} />
 
       {/* Sticky Header Navigation bar */}
       <Navbar onNavigate={handleSectionNavigation} />
@@ -79,8 +85,14 @@ export default function App() {
         {/* Design journal insights and detailed story views */}
         <Journal />
 
+        {/* Atelier Insights FAQ section */}
+        <FAQ />
+
         {/* High-conversion, fully validated client enquiry form */}
         <Contact />
+
+        {/* Curated Dispatch Newsletter block */}
+        <Newsletter />
       </main>
 
       {/* Structured Dark footer with links and office details */}

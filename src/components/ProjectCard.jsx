@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Maximize2 } from 'lucide-react';
 
 export default function ProjectCard({
   id,
@@ -9,6 +9,7 @@ export default function ProjectCard({
   year,
   image,
   onClick,
+  onImageClick,
   aspectRatio = "aspect-[4/5]",
   offsetClass = ""
 }) {
@@ -27,12 +28,40 @@ export default function ProjectCard({
           className="w-full h-full object-cover transform scale-100 group-hover:scale-[1.05] transition-transform duration-700 ease-out"
         />
         {/* Soft elegant gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-deep-espresso/45 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-between p-6">
-          <span className="text-warm-ivory text-xs font-bold tracking-widest uppercase">
+        <div className="absolute inset-0 bg-gradient-to-t from-deep-espresso/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-between p-6">
+          <span className="text-warm-ivory text-[10px] font-bold tracking-widest uppercase">
             EXPLORE DESIGN
           </span>
-          <div className="w-10 h-10 rounded-none bg-warm-ivory/90 text-deep-espresso flex items-center justify-center transform translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-            <ArrowUpRight className="w-4 h-4" />
+          
+          {/* Dual Action Controls */}
+          <div className="flex gap-2">
+            {/* Action 1: Enlarge Lightbox */}
+            {onImageClick && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onImageClick();
+                }}
+                title="Inspect Close-up"
+                data-cursor="ZOOM"
+                className="w-10 h-10 rounded-none bg-warm-ivory/90 hover:bg-terracotta-beige hover:text-warm-ivory text-deep-espresso flex items-center justify-center transform translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-sm"
+              >
+                <Maximize2 className="w-4 h-4" />
+              </button>
+            )}
+
+            {/* Action 2: View Story Details */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onClick();
+              }}
+              title="Read narrative"
+              data-cursor="DETAILS"
+              className="w-10 h-10 rounded-none bg-warm-ivory/90 hover:bg-terracotta-beige hover:text-warm-ivory text-deep-espresso flex items-center justify-center transform translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-sm"
+            >
+              <ArrowUpRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </div>
