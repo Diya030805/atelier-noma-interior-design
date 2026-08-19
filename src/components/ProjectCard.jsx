@@ -21,12 +21,18 @@ export default function ProjectCard({
 
   return (
     <div
-      onClick={onClick}
       data-cursor="EXPLORE"
-      className={`group cursor-pointer flex flex-col justify-start items-stretch ${offsetClass} transition-all duration-500`}
+      className={`group flex flex-col justify-start items-stretch ${offsetClass} transition-all duration-500`}
     >
       {/* Editorial Image frame with blur-up loading staging */}
-      <div className={`relative overflow-hidden rounded-none ${aspectRatio} border border-soft-cream bg-soft-cream shadow-sm`}>
+      <div 
+        onClick={(e) => {
+          e.stopPropagation();
+          if (onImageClick) onImageClick();
+        }}
+        data-cursor="ZOOM"
+        className={`relative cursor-zoom-in overflow-hidden rounded-none ${aspectRatio} border border-soft-cream bg-soft-cream shadow-sm`}
+      >
         
         {/* Instant blurred low-quality placeholder */}
         {!isLoaded && placeholderUrl && (
@@ -91,7 +97,14 @@ export default function ProjectCard({
       </div>
 
       {/* Project Metadata Labeling */}
-      <div className="mt-5 flex flex-col items-start gap-1 font-sans">
+      <div 
+        onClick={(e) => {
+          e.stopPropagation();
+          if (onClick) onClick();
+        }}
+        data-cursor="READ"
+        className="mt-5 flex flex-col items-start gap-1 font-sans cursor-pointer group/meta"
+      >
         <div className="flex justify-between items-baseline w-full">
           <h3 className="font-serif text-lg md:text-xl text-deep-espresso group-hover:text-terracotta-beige transition-colors duration-300 font-light">
             {title}
